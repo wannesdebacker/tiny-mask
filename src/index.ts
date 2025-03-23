@@ -1,8 +1,23 @@
-import './index.css';
+export type {
+  MaskCharacter,
+  MaskPattern,
+  MaskOptions,
+  MaskState,
+  Mask,
+  InitOptions,
+  InitResult,
+} from './types';
 
-document.querySelector('#root')!.innerHTML = `
-<div class="content">
-  <h1>Vanilla Rsbuild</h1>
-  <p>Start building amazing things with Rsbuild.</p>
-</div>
-`;
+export { createMask } from './mask';
+export { DEFAULT_PATTERNS } from './patterns';
+export { init } from './init';
+
+export {
+  createDateMask,
+  createPhoneMask,
+  createCardMask,
+  createTimeMask,
+  createIpMask,
+} from './utils';
+
+console.log('Processing index.ts');
