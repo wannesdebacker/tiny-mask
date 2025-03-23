@@ -6,6 +6,7 @@
     "useDefineForClassFields": true,
     "declaration": true,
     "declarationDir": "./dist",
+    "emitDeclarationOnly": true,
 
     "module": "ESNext",
     "moduleResolution": "bundler",
@@ -17,5 +18,5 @@
     "noUnusedParameters": true
   },
   "include": ["src"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "stories", ".storybook", "dist"]
 }
