@@ -244,8 +244,8 @@ describe('Mask Creation', () => {
       input.value = 'abc';
       input.dispatchEvent(new Event('input'));
 
-      // Should result in placeholders since no digits are present
-      expect(input.value).toBe('___');
+      // Should be empty because it won't fill in
+      expect(input.value).toBe('');
     });
 
     it('should handle unmounting and remounting', () => {

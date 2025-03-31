@@ -1,0 +1,37 @@
+import { createSignal, onMount } from 'solid-js';
+import { createDateMask } from 'tiny-mask';
+
+export default function DateMask() {
+  const [value, setValue] = createSignal('');
+  const [formattedValue, setFormattedValue] = createSignal('');
+  let inputRef: HTMLInputElement | undefined = undefined;
+  
+  onMount(() => {
+    // Check if inputRef is set before using it
+    if (inputRef) {
+      const mask = createDateMask({
+        mask: 'DD/MM/YYYY',
+        onChange: (rawValue, maskedValue) => {
+          setValue(rawValue || '');
+          setFormattedValue(maskedValue || '');
+        }
+      });
+      
+      mask.mount(inputRef);
+    }
+  });
+  
+  return (
+    <div>
+      <input 
+        ref={inputRef} 
+        placeholder="DD/MM/YYYY" 
+        class="demo-input" 
+      />
+      <div class="demo-info">
+        <div>Raw value: {value()}</div>
+        <div>Formatted value: {formattedValue()}</div>
+      </div>
+    </div>
+  );
+}

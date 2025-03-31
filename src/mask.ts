@@ -1,3 +1,5 @@
+// Modified version of the mask.ts file with fixes for the "undefined" string bug
+
 import type {
   Mask,
   MaskOptions,
@@ -64,6 +66,10 @@ export const createMask = (options: MaskOptions): Mask => {
     _originalMask: options.mask,
     _optionalSections: optionalSections,
   };
+
+  if (config.placeholder === undefined || config.placeholder === null) {
+    config.placeholder = '_';
+  }
 
   let inputElement: HTMLInputElement | null = null;
   let state: MaskState = {
@@ -272,35 +278,40 @@ export const createMask = (options: MaskOptions): Mask => {
 
       // Apply mask and get raw value
       const maskedValue = applyMask(newValue);
-      const rawValue = extractRawValue(maskedValue);
+      // Ensure we don't process undefined values
+      const maskedValueSafe = maskedValue || '';
+      
+      const rawValue = extractRawValue(maskedValueSafe);
+      // Ensure we don't process undefined values
+      const rawValueSafe = rawValue || '';
 
       // Validate the value
-      const validation = validateValue(rawValue);
+      const validation = validateValue(rawValueSafe);
 
       // Calculate cursor position
       const newCursorPosition = calculateCursorPosition(
         oldValue,
-        maskedValue,
+        maskedValueSafe,
         currentSelectionStart,
         operation === 'delete' ? 'delete' : 'insert',
       );
 
       // Check if value has changed
-      const valueChanged = maskedValue !== oldValue;
+      const valueChanged = maskedValueSafe !== oldValue;
 
       // Update state
       state = {
         ...state,
-        rawValue,
-        maskedValue,
+        rawValue: rawValueSafe,
+        maskedValue: maskedValueSafe,
         cursorPosition: newCursorPosition,
         validation,
       };
 
       // Update input value if it's different
-      if (input.value !== maskedValue) {
+      if (input.value !== maskedValueSafe) {
         isInputProgrammaticallyModified = true;
-        input.value = maskedValue;
+        input.value = maskedValueSafe;
         isInputProgrammaticallyModified = false;
       }
 
@@ -321,7 +332,7 @@ export const createMask = (options: MaskOptions): Mask => {
 
       // Call onChange callback if provided
       if (config.onChange) {
-        config.onChange(rawValue, maskedValue);
+        config.onChange(rawValueSafe, maskedValueSafe);
       }
     } finally {
       isProcessingInput = false;
@@ -361,6 +372,11 @@ export const createMask = (options: MaskOptions): Mask => {
    * Extracts raw value from masked input
    */
   const extractRawValue = (maskedValue: string): string => {
+    // Handle undefined or empty values
+    if (!maskedValue) {
+      return '';
+    }
+    
     // Get the current effective mask
     const effectiveMask = getDynamicMask(maskedValue);
 
@@ -425,7 +441,6 @@ export const createMask = (options: MaskOptions): Mask => {
 
       // If this character is a pattern character
       if (pattern) {
-        let matched = false;
         // Instead of a while loop, we'll check each character once
         if (inputIndex < input.length) {
           const inputChar = input[inputIndex];
@@ -434,13 +449,8 @@ export const createMask = (options: MaskOptions): Mask => {
               ? pattern.transform(inputChar)
               : inputChar;
             result += transformed;
-            matched = true;
           }
           inputIndex++;
-        }
-
-        if (!matched) {
-          result += config.placeholder;
         }
       }
       // If it's a literal character in the mask
@@ -587,7 +597,7 @@ export const createMask = (options: MaskOptions): Mask => {
     if (!inputElement) return;
 
     const input = event.target as HTMLInputElement;
-    const oldValue = state.maskedValue;
+    const oldValue = state.maskedValue || ''; // Ensure oldValue is never undefined
     const operation =
       input.value.length < oldValue.length ? 'delete' : 'insert';
 
@@ -700,7 +710,7 @@ export const createMask = (options: MaskOptions): Mask => {
         // Process this as an autofill event
         processInput(
           inputElement as HTMLInputElement,
-          state.maskedValue,
+          state.maskedValue || '', // Ensure maskedValue is never undefined
           'autofill',
         );
       }
@@ -742,18 +752,20 @@ export const createMask = (options: MaskOptions): Mask => {
     // Initialize with current value
     if (inputElement.value) {
       const maskedValue = applyMask(inputElement.value);
-      const rawValue = extractRawValue(maskedValue);
-      const validation = validateValue(rawValue);
+      const maskedValueSafe = maskedValue || ''; // Prevent undefined
+      const rawValue = extractRawValue(maskedValueSafe);
+      const rawValueSafe = rawValue || ''; // Prevent undefined
+      const validation = validateValue(rawValueSafe);
 
       state = {
         ...state,
-        rawValue,
-        maskedValue,
+        rawValue: rawValueSafe,
+        maskedValue: maskedValueSafe,
         cursorPosition: 0,
         validation,
       };
 
-      inputElement.value = maskedValue;
+      inputElement.value = maskedValueSafe;
     }
   };
 
@@ -795,7 +807,7 @@ export const createMask = (options: MaskOptions): Mask => {
    * Gets the current raw value
    */
   const getValue = (): string => {
-    return state.rawValue;
+    return state.rawValue || ''; // Ensure we never return undefined
   };
 
   /**
@@ -805,20 +817,22 @@ export const createMask = (options: MaskOptions): Mask => {
     if (!inputElement) return;
 
     const maskedValue = applyMask(value);
-    const rawValue = extractRawValue(maskedValue);
-    const validation = validateValue(rawValue);
+    const maskedValueSafe = maskedValue || ''; // Ensure never undefined
+    const rawValue = extractRawValue(maskedValueSafe);
+    const rawValueSafe = rawValue || ''; // Ensure never undefined
+    const validation = validateValue(rawValueSafe);
 
     state = {
       ...state,
-      rawValue,
-      maskedValue,
-      cursorPosition: maskedValue.length,
+      rawValue: rawValueSafe,
+      maskedValue: maskedValueSafe,
+      cursorPosition: maskedValueSafe.length,
       validation,
     };
 
     // Avoid triggering mutation observer
     isInputProgrammaticallyModified = true;
-    inputElement.value = maskedValue;
+    inputElement.value = maskedValueSafe;
     isInputProgrammaticallyModified = false;
 
     // Update validation styling
@@ -826,7 +840,7 @@ export const createMask = (options: MaskOptions): Mask => {
 
     // Call onChange callback if provided
     if (config.onChange) {
-      config.onChange(rawValue, maskedValue);
+      config.onChange(rawValueSafe, maskedValueSafe);
     }
   };
 
@@ -859,7 +873,7 @@ export const createMask = (options: MaskOptions): Mask => {
 
     // Re-apply mask with new options
     if (inputElement && inputElement.value) {
-      setValue(state.rawValue);
+      setValue(state.rawValue || ''); // Ensure rawValue is never undefined
     }
   };
 
@@ -867,7 +881,7 @@ export const createMask = (options: MaskOptions): Mask => {
    * Manually validate the current value
    */
   const validate = (): ValidationResult => {
-    const validation = validateValue(state.rawValue);
+    const validation = validateValue(state.rawValue || ''); // Ensure rawValue is never undefined
 
     // Update state
     state.validation = validation;
