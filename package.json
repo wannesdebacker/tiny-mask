@@ -1,5 +1,5 @@
 {
-  "name": "@wannesdebacker/tiny-mask",
+  "name": "fairly-tiny-mask",
   "version": "0.0.1",
   "type": "module",
   "main": "dist/index.js",
