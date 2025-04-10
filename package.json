@@ -1,6 +1,6 @@
 {
   "name": "tiny-mask",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "main": "dist/index.js",
@@ -17,7 +17,7 @@
   },
   "types": "dist/types.d.ts",
   "scripts": {
-    "build": "esbuild src/index.ts src/presets.ts --bundle --minify --sourcemap --outdir=dist --format=esm --platform=neutral && tsc --declaration --emitDeclarationOnly --outDir dist",
+    "build": "node esbuild.config.js && tsc --declaration --emitDeclarationOnly --outDir dist",
     "dev": "storybook dev -p 6006",
     "format": "prettier --write .",
     "lint": "eslint .",
@@ -40,6 +40,7 @@
     "esbuild": "^0.25.1",
     "eslint": "^9.21.0",
     "eslint-plugin-storybook": "^0.11.6",
+    "glob": "^11.0.1",
     "globals": "^16.0.0",
     "happy-dom": "^17.4.4",
     "lit": "^3.2.1",
