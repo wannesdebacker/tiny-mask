@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      fairly-tiny-mask:
+        specifier: ^0.0.1
+        version: 0.0.1
       solid-js:
         specifier: ^1.9.5
         version: 1.9.5
@@ -442,6 +445,9 @@ packages:
   escalade@3.2.0:
     resolution: {integrity: sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA==}
     engines: {node: '>=6'}
+
+  fairly-tiny-mask@0.0.1:
+    resolution: {integrity: sha512-2DRpFWDQTMK9mVPNvi7ZZFhRLMfaohJLb5qU6lnFP7pdBoifIRJoNTLUpSA3bYKe+pSy5Z0U4ag/vhmvqEov/A==}
 
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
@@ -968,6 +974,8 @@ snapshots:
       '@esbuild/win32-x64': 0.25.2
 
   escalade@3.2.0: {}
+
+  fairly-tiny-mask@0.0.1: {}
 
   fsevents@2.3.3:
     optional: true

@@ -1,6 +1,5 @@
 /* @refresh reload */
 import { render } from 'solid-js/web';
-import { createSignal } from 'solid-js';
 import './index.css';
 
 import Header from './components/Header';

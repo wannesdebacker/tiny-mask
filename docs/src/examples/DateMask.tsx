@@ -1,5 +1,5 @@
 import { createSignal, onMount } from 'solid-js';
-import { createDateMask } from 'tiny-mask';
+import { createDateMask } from 'fairly-tiny-mask';
 
 export default function DateMask() {
   const [value, setValue] = createSignal('');

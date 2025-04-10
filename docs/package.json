@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "solid-js": "^1.9.5",
-    "tiny-mask": "file:../dist/"
+    "fairly-tiny-mask": "^0.0.1",
+    "solid-js": "^1.9.5"
   },
   "devDependencies": {
     "typescript": "^5.7.0",

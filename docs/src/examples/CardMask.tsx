@@ -1,5 +1,5 @@
 import { createSignal, onMount } from 'solid-js';
-import { createCardMask } from 'tiny-mask';
+import { createCardMask } from 'fairly-tiny-mask';
 
 export default function CardMask() {
   const [value, setValue] = createSignal('');

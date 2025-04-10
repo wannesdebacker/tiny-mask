@@ -5,7 +5,7 @@ export default function Header() {
           <h1>Tiny Mask</h1>
           <p>A lightweight, customizable input mask library</p>
           <div class="buttons">
-            <a href="https://github.com/yourusername/tiny-mask" class="button">GitHub</a>
+            <a href="https://github.com/wannesdebacker/tiny-mask" class="button">GitHub</a>
             <a href="#docs" class="button primary">Documentation</a>
           </div>
         </div>
