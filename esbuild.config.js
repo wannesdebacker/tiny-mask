@@ -2,7 +2,9 @@ import esbuild from 'esbuild';
 import { glob } from 'glob';
 
 async function buildLibrary() {
-  const entryPoints = await glob('src/**/*.ts');
+  const entryPoints = await glob('src/**/*.ts', {
+    ignore: ['**/stories/*.ts', '**/*.test.ts']
+  });
 
   await esbuild.build({
     entryPoints,
@@ -10,7 +12,7 @@ async function buildLibrary() {
     format: 'esm',
     platform: 'neutral',
     target: 'es2020',
-    bundle: false,
+    bundle: false,  // Don't bundle, preserve module structure
     splitting: false,
     sourcemap: true,
     minify: true,
