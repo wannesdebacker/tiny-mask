@@ -1,7 +1,6 @@
 {
   "name": "tiny-mask",
   "version": "0.0.1",
-  "private": "false",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
