@@ -1,0 +1,8 @@
+*.test.js*
+*.stories.js
+
+docs/
+examples/
+src/
+coverage/
+.github/
